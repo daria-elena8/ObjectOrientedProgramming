@@ -39,7 +39,22 @@ public:
 			denumire == other.denumire;
 	}
 
+	friend ostream& operator<<(ostream&,Materie&);
+
 };
+
+ostream& operator<<(ostream& out, Materie& mat) {
+	cout << endl;
+	cout << "Denumire: ";
+	out << mat.denumire;
+	cout << endl << "Optional:  ";
+	if (mat.optional == 0)
+		out << "Nu.";
+	else
+		out << "Da.";
+	cout << endl;
+	return out;
+}
 
 class Student {
 private:
@@ -142,8 +157,10 @@ ostream& operator<<(ostream& out, Curs& op)
 	cout << endl << "nrStudenti:  ";
 	out << op.nrStudenti;
 	cout << endl << "Studenti:  ";
-	for i in op.St:
-	   out << op.St[i];
+	//op.St.size()
+	int i = 0;
+	while (out << op.St[i])
+		i++;
 	cout << endl;
 	return out;
 }
@@ -160,14 +177,23 @@ int main()
 
 	cout << endl;
 	
-	Student s1(12, "Ionescu", 133), s2;
-    /*
-	cin >> s2;
-	cout << s1 << endl << s2 << endl;
+Student s1(12, "Ionescu", 133), s2;
+	cout << s1;
+    
+	/*cin >> s2;
+	cout << s2 << endl;
 	*/
-
+	
 	Curs c1(m1);
 	c1 += s1;
-	Curs c2 = c1;
+	/*Curs c2 = c1;
+	cout << c1;*/
 	return 0;
 }
+
+
+/*
+
+const int&  - nu e nev de & pt ca e alocat pe stack
+
+*/

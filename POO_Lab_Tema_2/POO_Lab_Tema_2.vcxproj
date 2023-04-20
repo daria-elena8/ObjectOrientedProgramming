@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+	<LanguageStandard>stdcpp17</LanguageStandard>
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{66d74e37-3efa-4daa-8309-a131983cf6f3}</ProjectGuid>

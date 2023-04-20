@@ -11,16 +11,30 @@ Abonament::Abonament(const Abonament& other)
 	std::cout << " Constructor cu un Parametru Abonament " << std::endl;
 }
 
+Abonament::Abonament(Abonament&& other) noexcept
+{
+	std::cout << " Abonament Moved " << std::endl;
+	nume_abonament = other.nume_abonament;
+	pret = other.pret;
+	perioada = other.perioada;
+
+	other.nume_abonament = "";
+	other.pret = 0;
+	other.perioada = 0;
+}
+
 Abonament::Abonament(const std::string& ot1, const float& ot2, const int& ot3)
 	:nume_abonament(ot1), pret(ot2), perioada(ot3)
 {
 	std::cout << " Constructor cu Parametrii Abonament " << std::endl;
 }
 
+
 Abonament::~Abonament()
 {
 	std::cout << " Destructor Abonament " << std::endl;
 }
+
 
 
 std::istream& operator>>(std::istream& is, Abonament& other)
@@ -29,8 +43,8 @@ std::istream& operator>>(std::istream& is, Abonament& other)
 	std::cout << " *** Please insert information about Abonament *** " << std::endl;
 		
 	std::cout << " Introduceti numele abonamentului: ";
-	std::getline(is, other.nume_abonament);
-
+	is >> other.nume_abonament;
+	
 	std::cout << " Introduceti pretul abonamentului: ";
 	is >> other.pret;
 
@@ -89,10 +103,33 @@ Abonament& Abonament::operator=(const Abonament& other)
 
 void Abonament::print()
 {
+	
+	std::cout << " Status: Abonament Free " << std::endl;
 	std::cout << " - Nume abonament: " << nume_abonament << std::endl;
-	std::cout << " - Pret: " << pret << std::endl;
-	std::cout << " - Perioada: " << perioada << std::endl;
+	std::cout << " - Pret: " << pret << "$" << std::endl;
+	std::cout << " - Perioada: " << perioada << " months " << std::endl;
 }
+/*
+void Abonament::change()
+{
+	std::cout << " Nume abonament: ";
+	std::cin >> nume_abonament;
+	std::cout << std::endl << " Pret: ";
+	std::cin >> pret;
+	std::cout << std::endl << " Perioada: ";
+	std::cin >> perioada;
+	std::cout << std::endl;
+}
+
+void Abonament::change(const Abonament& other)
+{
+	nume_abonament = other.nume_abonament;
+	pret = other.pret;
+	perioada = other.perioada;
+
+	std::cout << " Abonament schimbat cu succes!" << std::endl;
+}
+*/
 
 Abonament_Premium::Abonament_Premium()
 {
@@ -105,13 +142,26 @@ Abonament_Premium::Abonament_Premium(const std::string& ot1, const float& ot2, c
 	std::cout << " Constructor cu Parametrii Abonament Premium " << std::endl;
 }
 
+Abonament_Premium::Abonament_Premium(const std::string& ot1, const float& ot2, const int& ot3)
+	:Abonament(ot1, ot2, ot3)
+{
+	std::cout << std::endl << " Warning!  Your Subscription Was Downgraded To Free" << std::endl << std::endl;
+}
+
 Abonament_Premium::Abonament_Premium(const Abonament& ot1, const int& ot2)
 	:Abonament(ot1),reducere(ot2)
 {
 	std::cout << " Constructor pe Baza de Abonament " << std::endl;
 }
 
-Abonament_Premium::~Abonament_Premium()
+Abonament_Premium::Abonament_Premium(const Abonament& other)
+	:Abonament(other)
+{
+	std::cout << std::endl << " Warning!  Your Subscription Was Downgraded To Free" << std::endl << std::endl;
+
+}
+
+Abonament_Premium::~Abonament_Premium() 
 {
 	std::cout << " Destructor Abonament Premium " << std::endl;
 }
@@ -129,9 +179,29 @@ Abonament_Premium& Abonament_Premium::operator=(const Abonament_Premium& other)
 
 void Abonament_Premium::print()
 {
-	Abonament::print();
-	std::cout << " - Reducere: " << reducere <<"%" << std::endl;
+	
+	if (reducere > 0)
+	{
+		std::cout << " Status: Abonament Premium " << std::endl;
+		Abonament::print();
+		std::cout << " - Reducere: " << reducere << "%" << std::endl;
+	}
+	
 }
+/*
+void Abonament_Premium::change()
+{
+	Abonament::change();
+	std::cout << " Reducere: " << std::endl;
+	std::cin >> reducere;
+
+}
+
+int Abonament_Premium::getreducere()
+{
+	return reducere;
+}
+*/
 
 Persoana::Persoana()
 {
@@ -149,6 +219,11 @@ Persoana::Persoana(const Persoana& other)
 {
 	std::cout << " Constructor cu un Parametru Persoana " << std::endl;
 }
+/*
+Persoana::Persoana(const Abonat& other)
+	:id(other.id), nume(other.nume), cnp(other.cnp)
+{
+}*/
 
 Persoana::~Persoana()
 {
@@ -172,6 +247,25 @@ void Persoana::print()
 	std::cout << " - Id_Persoana: " << id << std::endl;
 	std::cout << " - Nume_Persoana: " << nume << std::endl;
 	std::cout << " - CNP_Persoana: " << cnp << std::endl;
+}
+/*
+void Persoana::change(Persoana& other)
+{
+	
+	std::cout << " ID: " << std::endl;
+	std::cin >> other.id;
+	std::cout << " Nume: " << std::endl;
+	std::cin >> other.nume;
+	std::cout << " CNP: " << std::endl;
+	std::cin >> other.cnp;
+
+	std::cout << " Date personale modificate cu succes! " << std::endl;
+
+}*/
+
+int Persoana::getId()
+{
+	return id;
 }
 
 std::istream& operator>>(std::istream& is, Persoana& other)
@@ -211,10 +305,10 @@ std::istream& operator>>(std::istream& is, Abonat& other)
 	is >> other.nr_telefon;
 
 	std::cout << std::endl;
+
 	is >> static_cast<Abonament&>(other);
 	std::cout << std::endl;
 
-	// !!!! Sare peste nume_abonament
 
 	return is;
 
@@ -238,6 +332,9 @@ std::ostream& operator<<(std::ostream& os, const Abonat& other)
 		throw std::runtime_error("Dynamic Cast Failed --- Nu s-a putut face conversia la Abonament");
 	
 	os << *ab_ptr;
+
+	std::cout << std::endl;
+
 		
 	return os;
 
@@ -285,6 +382,12 @@ Abonat::Abonat(const Abonat& other)
 	std::cout << " Constructor de Copiere Abonat " << std::endl;
 }
 
+Abonat::Abonat(const int& other)
+{
+	id = other;
+	std::cout << "Constructor Verificare Abonat" << std::endl;
+}
+
 Abonat::~Abonat()
 {
 	std::cout << " Destructor Abonat " << std::endl;
@@ -295,6 +398,102 @@ void Abonat::print()
 	Persoana::print();
 	std::cout << " - Numar de telefon: " << nr_telefon << std::endl;
 	Abonament::print();
+}
+
+void Abonat::printPersoana()
+{
+	Persoana::print();
+}
+/*
+void Abonat::printAbonament(const Abonament& other)
+{
+	if (other.getreducere() > 0)
+	{
+		std::cout << " Status: Abonament Premium " << std::endl;
+		Abonament::print();
+		std::cout << " - Reducere: " << other.getreducere << "%" << std::endl;
+	}
+	else
+	{
+		std::cout << " Status: Abonament Free " << std::endl;
+		Abonament::print();
+
+	}
+	
+}*/
+/*
+void Abonat::change(Abonat& other)
+{
+
+	Persoana p( other.id, other.nume, other.cnp );
+	Persoana::change(p);
+}*/
+
+int Abonat::getId()
+{
+	int idd = Persoana::getId();
+	return idd;
+}
+
+int Abonat::getId(const Abonat& other)
+{
+	return other.id;
+}
+
+Clienti::Clienti()
+{
+	std::cout << " Constructor Default Clienti " << std::endl;
+
+}
+
+Clienti::~Clienti() 
+{
+	std::cout << " Destructor Clienti " << std::endl;
+}
+
+
+int Clienti::getsize()
+{
+	return abonati.size();
+}
+
+Abonat Clienti::FindID(const int& other)
+{
+	for (int i = 0; i < abonati.size(); i++) 
+		if (getId(abonati[i]) == other)
+		{
+			Abonat b = abonati[i];
+			return b;
+		}
+			
+	 Abonat a(0);
+	 return a;
+}
+/*
+void Clienti::eraseC(const Abonat& other)
+{
+	for (int i = 0; i < abonati.size(); i++)
+		if (getId(abonati[i]) == getId(other)) {
+              abonati.erase(i);
+			break;
+		}
+}
+*/
+void Clienti::Adaugare_Clienti(const Abonat& other)
+{
+	abonati.push_back(other);
+	std::cout << " Am adaugat cu succes un nou abonat! " << std::endl;
+}
+
+int Clienti::count_premium_abonati()
+{
+	int count = 0;
+	for (auto& abonat : abonati) {
+		if (dynamic_cast<Abonament_Premium*>(&abonat)) {
+			count++;
+		}
+	}
+	return 0;
 }
 
 
