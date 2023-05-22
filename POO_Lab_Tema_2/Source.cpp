@@ -31,6 +31,9 @@ void Creare_Date()
 
 int main()
 {
+
+	// Declarare ok
+
 	//Abonament a1, a2("Netfix", 13.5, 12), a7("Youtube", 10.8, 6);
 	//a2.print();
 	//Abonament_Premium a3, a4("Youtube", 10.0, 6), a5(a2, 10);
@@ -320,8 +323,9 @@ int main()
 		std::cout << std::endl;
 	}
 
-	std::cout << " 1. Aflarea numarului de abonati premium." << std::endl;
-	std::cout << " Numarul de abonati premium: " << lista.count_premium_abonati() << std::endl;
+	std::cout << " 1. Aflarea numarului de abonati la serviciul premium." << std::endl;
+	std::cout << " Numarul de abonati la serviciul premium: " << lista.count_premium_abonati() << std::endl;
+	std::cout << std::endl;
 
 	//Abonat c1, c3(p2, "0192383091", a2);
 	//Abonat c2( 51, "Jessica", "601229218321", "0712345678", "Facebook", 16.4, 24);

@@ -19,7 +19,7 @@ public:
 	//virtual void change();
 	//void change(const Abonament& other);
 
-
+	virtual void getAb(int& count);
 
 	friend std::istream& operator>>(std::istream& is, Abonament& other);
 	friend std::ostream& operator<<(std::ostream& os, const Abonament& other);
@@ -42,7 +42,7 @@ public:
 	Abonament_Premium(const Abonament& other);
 
 	virtual ~Abonament_Premium();
-
+	void getAb(int& count);
 	Abonament_Premium& operator=(const Abonament_Premium& other);
 	void print();
 	//void change();
@@ -94,6 +94,7 @@ public:
 	Abonat(const int& id_persoana, const std::string& nume_persoana, const std::string& cnp_persoana, const std::string& nr_tel, const Abonament& other);
 	Abonat(const Persoana& other1, const std::string& nr_tel, const std::string& nume_abonament, const float& pret_abonament, const int& perioada_abonament);
 	Abonat(const Persoana& other1, std::string other2, const Abonament& other3);
+	
 
 	Abonat(const int& other);
 	Abonat(const Abonat& other);

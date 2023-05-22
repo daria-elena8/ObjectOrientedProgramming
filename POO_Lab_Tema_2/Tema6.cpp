@@ -104,10 +104,13 @@ Abonament& Abonament::operator=(const Abonament& other)
 void Abonament::print()
 {
 	
-	std::cout << " Status: Abonament Free " << std::endl;
 	std::cout << " - Nume abonament: " << nume_abonament << std::endl;
 	std::cout << " - Pret: " << pret << "$" << std::endl;
 	std::cout << " - Perioada: " << perioada << " months " << std::endl;
+}
+void Abonament::getAb(int &count)
+{
+	
 }
 /*
 void Abonament::change()
@@ -166,6 +169,11 @@ Abonament_Premium::~Abonament_Premium()
 	std::cout << " Destructor Abonament Premium " << std::endl;
 }
 
+void Abonament_Premium::getAb(int &count)
+{
+	count++;
+}
+
 Abonament_Premium& Abonament_Premium::operator=(const Abonament_Premium& other)
 {
 	std::cout << " Using Abonament_Premium Operator = " << std::endl;
@@ -182,7 +190,6 @@ void Abonament_Premium::print()
 	
 	if (reducere > 0)
 	{
-		std::cout << " Status: Abonament Premium " << std::endl;
 		Abonament::print();
 		std::cout << " - Reducere: " << reducere << "%" << std::endl;
 	}
@@ -488,12 +495,9 @@ void Clienti::Adaugare_Clienti(const Abonat& other)
 int Clienti::count_premium_abonati()
 {
 	int count = 0;
-	for (auto& abonat : abonati) {
-		if (dynamic_cast<Abonament_Premium*>(&abonat)) {
-			count++;
-		}
-	}
-	return 0;
+	for (int i = 0; i < size(abonati); i++)
+		abonati[i].getAb(count);
+	return count;
 }
 
 
