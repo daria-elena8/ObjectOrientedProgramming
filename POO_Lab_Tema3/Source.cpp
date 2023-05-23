@@ -1,4 +1,4 @@
-#include "Tema6.cpp.h"
+﻿#include "Tema6.cpp.h"
 
 
 int main() {
@@ -8,11 +8,11 @@ int main() {
 	std::cin>>ab2;
 	std::cout << std::endl;
 	std::cout << std::endl;
-	
+
 	std::cout << "Afisare ab1:" << std::endl;
 	std::cout << ab1;
 	std::cout << std::endl;
-	
+
 	std::cout << "Afisare ab2:" << std::endl;
 	std::cout << ab2;
 	std::cout << std::endl;
@@ -55,7 +55,7 @@ int main() {
 	std::cout << std::endl;
 	std::cout << std::endl;
 	std::cout << "Afisare a1:" << std::endl;
-	
+
 	std::cout << a1;
 
 	return 0;

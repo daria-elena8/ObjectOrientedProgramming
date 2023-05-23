@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -34,7 +34,7 @@ std::ostream& operator<<(std::ostream& os, const Base<T>& other) {
 }
 
 
-class Abonament : public Base<Abonament>{
+class Abonament : public Base<Abonament> {
 
 protected:
 	std::string nume_abonament;
@@ -49,7 +49,7 @@ public:
 
 	~Abonament() {};
 
-	std::string getNumeAbonament(){
+	std::string getNumeAbonament() {
 		return nume_abonament;
 	}
 
@@ -61,13 +61,13 @@ public:
 		return perioada;
 	}
 
-	virtual void print(std::ostream& os) const  {
+	virtual void print(std::ostream& os) const {
 		os << "Abonament: "; std::cout << nume_abonament << std::endl;
 		os << "Pret: "; std::cout << pret << std::endl;
 		os << "Perioada: "; std::cout << perioada << std::endl;
 	}
 
-	virtual void read(std::istream& is)  {
+	virtual void read(std::istream& is) {
 		std::cout << "Nume Abonament: ";
 		is >> nume_abonament;
 		std::cout << "Pret: ";
@@ -93,7 +93,7 @@ public:
 		return this*;
 	}*/
 
-	void print(std::ostream& os) const override{
+	void print(std::ostream& os) const override {
 		Abonament::print(os);
 		os << "Reducere: "; std::cout << reducere << std::endl;
 	}
@@ -136,7 +136,7 @@ public:
 	}
 };
 
-class Abonat : public Persoana{
+class Abonat : public Persoana {
 protected:
 	std::string nr_telefon;
 	Abonament* x;
@@ -154,51 +154,49 @@ public:
 		delete x;
 	}
 
-	std::string getNrTel() {
+	std::string getNrTel() const {
 		return nr_telefon;
 	}
 
-	
-
 	void print(std::ostream& os) {
-		
+
 		std::cout << "Numar Telefon: "; std::cout << nr_telefon << std::endl;
 		x->print(os);
 		Persoana::print(os);
 
-		
+
 	}
-	
+
 
 	void read(std::istream& is) {
 		Persoana::read(is);
 
 		std::cout << "Numar Telefon: ";
 		is >> nr_telefon;
-		
+
 		bool is_premium;
 
 		std::cout << "Doriti abonament premium? (0 - Nu, 1 - Da): ";
 		std::cin >> is_premium;
 
-		if (is_premium) 			
+		if (is_premium)
 			x = new Abonament_Premium;
-		else			
+		else
 			x = new Abonament();
-		
+
 		x->read(is);
-	
+
 	}
 
+	friend std::ostream& operator<<(std::ostream& os, const Abonat& abonat);
 
-	std::ostream& operator<<(std::ostream& os, const Abonat& other) {
-
-		Persoana::print(os);
-		os << "Numar Telefon: " << other.getNrTel << endl;
-		x->print(os);
-	}
 
 };
 
-
+std::ostream& operator<<(std::ostream& os, const Abonat& abonat) {
+	os << "Numar Telefon: " << abonat.nr_telefon << std::endl;
+	abonat.x->print(os);
+	abonat.Persoana::print(os);
+	return os;
+}
 
