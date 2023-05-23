@@ -15,39 +15,23 @@ std::ofstream fout("abonamente.out");
 template <typename T>
 class Base {
 public:
-	/*template <typename U>
-	typename std::enable_if<!std::is_same<U, Base>::value, Base&>::type
-		operator<<(Base& object, const U& other) {
-		std::cout << obj;
-		return object;
-	}
 
-	template <typename U>
-	typename std::enable_if<std::is_same<U, Base>::value, Base&>::type
-		operator<<(Base& object, const U& other) {
-		object.print(other);
-		return object;
-	}*/
-	template <typename U>
-	friend typename std::enable_if<!std::is_same<U, Base>::value, Base&>::type
-		operator<<(Base& object, const U& other) {
-		std::cout << other;
-		return object;
-	}
+	virtual void print(std::ostream& os) const = 0;
+	virtual void read(std::istream& is) = 0;
 
-	template <typename U>
-	friend typename std::enable_if<!std::is_same<U, Base>::value, Base&>::type
-		operator>>(Base& object, U& other) {
-		std::cin >> other;
-		return object;
-	}
-
-	template <typename U>
-	void print(const T& other) const = 0;
 };
 
+template <typename T>
+std::istream& operator>>(std::istream& is, Base<T>& other) {
+	other.read(is);
+	return is;
+}
 
-
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const Base<T>& other) {
+	other.print(os);
+	return os;
+}
 
 
 class Abonament : public Base<Abonament>{
@@ -57,6 +41,7 @@ protected:
 	float pret;
 	int perioada;
 public:
+	Abonament() {};
 
 	Abonament(const std::string& n, const float& p, const int& per)
 		:nume_abonament(n), pret(p), perioada(per)
@@ -76,45 +61,20 @@ public:
 		return perioada;
 	}
 
-	void print(const Abonament& other) {
-		std::cout << "Abonament: " << other.nume_abonament << std::endl;
-		std::cout << "Pret: " << other.pret << std::endl;
-		std::cout << "Perioada: " << other.perioada << std::endl;
+	virtual void print(std::ostream& os) const  {
+		os << "Abonament: "; std::cout << nume_abonament << std::endl;
+		os << "Pret: "; std::cout << pret << std::endl;
+		os << "Perioada: "; std::cout << perioada << std::endl;
 	}
 
-	/*
-
-	friend std::istream& operator>>(std::istream& in, Abonament& other) {
-		std::cout << "Introduceti detalii despre abonament: " << std::endl;
-		std::cout << "Nume: ";
-		in >> other.nume_abonament;
+	virtual void read(std::istream& is)  {
+		std::cout << "Nume Abonament: ";
+		is >> nume_abonament;
 		std::cout << "Pret: ";
-		in >> other.pret;
+		is >> pret;
 		std::cout << "Perioada: ";
-		in >> other.perioada;
-
-		return in;
-	}*/
-	/*
-	friend std::ifstream& operator>>(std::ifstream& in, Abonament& other) {
-		
-		in >> other.nume_abonament;
-		in >> other.pret;
-		in >> other.perioada;
-		return in;
+		is >> perioada;
 	}
-
-	friend std::ostream& operator<<(std::ostream& out, const Abonament& other) {
-		out << "Abonament: " << other.nume_abonament << std::endl;
-		out << "Pret: " << other.pret << std::endl;
-		out << "Perioada: " << other.perioada << std::endl;
-	}
-
-	friend std::ofstream& operator<<(std::ofstream& out, const Abonament& other) {
-		out << "Abonament: " << other.nume_abonament << std::endl;
-		out << "Pret: " << other.pret << std::endl;
-		out << "Perioada: " << other.perioada << std::endl;
-	}*/
 
 
 };
@@ -124,22 +84,121 @@ protected:
 	int reducere;
 
 public:
+	Abonament_Premium() {};
 	Abonament_Premium(const std::string& n, const float& p, const int& per, const int& red)
 		:Abonament(n, p, per), reducere(red) {};
+	~Abonament_Premium() {};
+
+	/*Abonament_Premium getAbonament() {
+		return this*;
+	}*/
+
+	void print(std::ostream& os) const override{
+		Abonament::print(os);
+		os << "Reducere: "; std::cout << reducere << std::endl;
+	}
+	void read(std::istream& is) override {
+		Abonament::read(is);
+		std::cout << "Reducere: ";
+		is >> reducere;
+	}
+	void setReducere(const int& red)
+	{
+		reducere = red;
+	}
 
 };
 
-class Persoana {
+class Persoana : public Base<Persoana> {
 protected:
 	int id;
 	std::string nume;
 	std::string cnp;
 public:
+	Persoana() {};
+	Persoana(const int& i, const std::string& n, const std::string& c)
+		:id(i), nume(n), cnp(c) {};
+	~Persoana() {};
 
+	void print(std::ostream& os) const override {
+		os << "ID Persoana: "; std::cout << id << std::endl;
+		os << "Nume: "; std::cout << nume << std::endl;
+		os << "CNP: "; std::cout << cnp << std::endl;
+	}
+
+	void read(std::istream& is) override {
+		std::cout << "ID Persoana: ";
+		is >> id;
+		std::cout << "Nume: ";
+		is >> nume;
+		std::cout << "CNP: ";
+		is >> cnp;
+	}
 };
 
-class Abonat : public Persoana {
+class Abonat : public Persoana{
 protected:
 	std::string nr_telefon;
-	Abonament x;
+	Abonament* x;
+
+public:
+	Abonat() {};
+	Abonat(bool is_premium) {
+		if (is_premium) {
+			x = new Abonament();
+		}
+		else
+			x = new Abonament;
+	}
+	~Abonat() {
+		delete x;
+	}
+
+	std::string getNrTel() {
+		return nr_telefon;
+	}
+
+	
+
+	void print(std::ostream& os) {
+		
+		std::cout << "Numar Telefon: "; std::cout << nr_telefon << std::endl;
+		x->print(os);
+		Persoana::print(os);
+
+		
+	}
+	
+
+	void read(std::istream& is) {
+		Persoana::read(is);
+
+		std::cout << "Numar Telefon: ";
+		is >> nr_telefon;
+		
+		bool is_premium;
+
+		std::cout << "Doriti abonament premium? (0 - Nu, 1 - Da): ";
+		std::cin >> is_premium;
+
+		if (is_premium) 			
+			x = new Abonament_Premium;
+		else			
+			x = new Abonament();
+		
+		x->read(is);
+	
+	}
+
+
+	std::ostream& operator<<(std::ostream& os, const Abonat& other) {
+
+		Persoana::print(os);
+		os << "Numar Telefon: " << other.getNrTel << endl;
+		x->print(os);
+	}
+
 };
+
+
+
